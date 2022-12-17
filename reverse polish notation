@@ -1,0 +1,61 @@
+#include<bits/stdc++.h>
+#define ll long long
+
+class Solution {
+public:
+    int evalRPN(vector<string>& s) {
+        stack<int>st;
+        int N = s.size();
+        int ans = 0;
+        for(int i = 0 ; i < N; i++){
+            if(s[i] != "+" && s[i] != "-" && s[i] != "*" && s[i] != "/"){
+                ll num = 0;
+                bool neg = false;
+                for(int j = 0; j < s[i].length(); j++){
+                    if(s[i][j] == '-'){
+                        neg = true;
+                        continue;
+                    }
+                    ll curntnum = s[i][j] - '0';
+                    num*=10;
+                    num+=curntnum;
+                }
+                if(neg == true)
+                {
+                    num*=-1;
+                    st.push(num);
+                }
+                else{
+                    st.push(num);
+                }
+            }
+            else{
+                if(st.size() >= 2){
+                ll second = st.top();
+                st.pop();
+                ll first = st.top();
+                st.pop();
+                if(s[i] == "+"){
+                    ll sum = first + second;
+                    cout << sum <<"\n";
+                    st.push(sum);
+                }
+                else if(s[i] == "-"){
+                    ll sub = first - second;
+                    st.push(sub);
+                }
+                else if(s[i] == "/"){
+                    ll div = first / second;
+                    st.push(div);
+                }
+                else{
+                    ll mul = first * second;
+                    st.push(mul);
+                }
+            }
+            }
+            
+        }
+       return st.top();
+    }
+};
